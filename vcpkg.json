@@ -1,0 +1,10 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "quest-item-icons",
+  "version-string": "1",
+  "dependencies": [
+    "clib-util",
+    "mergemapper",
+    "commonlibsse-ng"
+  ]
+}
