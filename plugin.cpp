@@ -60,13 +60,16 @@ std::vector<std::string> FetchConfigs(RE::StaticFunctionTag *) {
                     // TODO sanitize string
                     // Right now only filters is quest
                     const auto sections = clib_util::string::split(entry, "|");
-                    FormOrEditorID record = clib_util::distribution::get_record(sections[0]);
+                    const auto recordSplit = clib_util::string::split(sections[0], "?");
+                    FormOrEditorID record = clib_util::distribution::get_record(recordSplit[0]);
                     std::string recordString = LookupForms::fetchFormId(record);
-                    std::string convertedLine = ""; 
+                    std::string convertedLine = "";
                     if (sections.size() > 1) {
                         FormOrEditorID quest = clib_util::distribution::get_record(sections[1]);
                         std::string questString = LookupForms::fetchFormId(record);
                         convertedLine = std::format("{}|{}", recordString, questString);
+                    } else if (recordSplit.size() > 1) {
+                        convertedLine = std::format("{}?{}", recordString, recordSplit[1]);
                     } else {
                         convertedLine = recordString;
                     }

@@ -85,6 +85,28 @@ Event OnUpdate()
                         Debug.Notification("questCheck failed for form with quest " + split2[1])
                     endIf
                 endif
+            ElseIf (type == "Alias")
+                ;Expects 1 or 2 params
+                string[] split2 = StringUtil.Split(split1[1], "?")
+
+                ; Check that linked quest is active and not completed
+                Bool questCheck = true
+                if split2.Length > 1
+                    string[] questSplit = StringUtil.Split(split2[0], "~")
+                    ; TODO how to get it based on reference id?
+                    Quest loadedQuest = FindForm(questSplit[0], questSplit[1]) as Quest
+                    ;Debug.Notification("isactive? " + loadedQuest.IsActive())
+                    ;Debug.Notification("iscomplete? " + loadedQuest.IsCompleted())
+                    questCheck = loadedQuest.IsActive() && !loadedQuest.IsCompleted()
+
+                    if (questCheck)
+                        ; TODO no idea if this works :P
+                        ReferenceAlias itemAlias = loadedQuest.GetAlias(split2[1] as int) as ReferenceAlias
+                        buildingList.AddForm(itemAlias.GetRef().GetBaseObject())
+                    endIf
+                Else
+                    Debug.Notification("Invalid format for quest alias " + split2[1])
+                endIf
             endif
         endif
     endWhile
